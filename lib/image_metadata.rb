@@ -105,6 +105,8 @@ class ImageMetadata
   end
 
   def self.strip(path)
+    raise(SaveError, "jpegoptim is missing") unless File.executable?(Config[:jpegoptim])
+
     `#{Config[:jpegoptim]} --strip-xmp --strip-com --strip-iptc --strip-exif #{path.shellescape}`
 
     $?.success?
@@ -147,6 +149,8 @@ class ImageMetadata
   end
 
   def save(iptc_encoding = Encoding::UTF_8)
+    raise(SaveError, "exiv2 is missing") unless File.executable?(Config[:exiv2])
+
     Tempfile.for iptc_commands(iptc_encoding) do |tempfile|
       system "/usr/bin/exiv2", "-m", tempfile.path, @path
 
