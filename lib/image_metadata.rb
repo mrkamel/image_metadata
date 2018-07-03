@@ -198,10 +198,10 @@ class ImageMetadata
 
     if value.is_a?(Array)
       value.each do |element|
-        res.push("#{type == :xmp || type == :exif ? "set" : "add"} #{mapping[:key]} #{mapping[:type]} #{element}") if element
+        res.push("#{type == :xmp || type == :exif ? "set" : "add"} #{mapping[:key]} #{mapping[:type]} #{element}") if element && element.to_s.length > 0
       end
     else
-      res.push("set #{mapping[:key]} #{mapping[:type]} #{value}") if value
+      res.push("set #{mapping[:key]} #{mapping[:type]} #{value}") if value && value.to_s.length > 0
     end
 
     res
