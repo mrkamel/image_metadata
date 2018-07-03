@@ -3,7 +3,7 @@ language: ruby
 rvm:
   - ruby-head
 before_install:
-  - apt-get update && apt-get install exiv2 libexiv2-dev jpegoptim
+  - sudo apt-get update && sudo apt-get install exiv2 libexiv2-dev jpegoptim
 install:
   - travis_retry bundle install
 script: rspec
