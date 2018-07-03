@@ -8,6 +8,7 @@ class ImageMetadata
   class SaveError < StandardError; end
 
   Config = {
+    jpegoptim: "/usr/bin/jpegoptim",
     exiv2: "/usr/bin/exiv2"
   }
 
@@ -101,6 +102,12 @@ class ImageMetadata
 
     @image = Exiv2::ImageFactory.open(path)
     @image.read_metadata
+  end
+
+  def self.strip(path)
+    `#{Config[:jpegoptim]} --strip-xmp --strip-com --strip-iptc --strip-exif #{path.shellescape}`
+
+    $?.success?
   end
 
   def to_hash
