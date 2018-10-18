@@ -8,8 +8,8 @@ class ImageMetadata
   class SaveError < StandardError; end
 
   Config = {
-    jpegoptim: "/usr/bin/jpegoptim",
-    exiv2: "/usr/bin/exiv2"
+    jpegoptim: `which jpegoptim`.strip,
+    exiv2: `which exiv2`.strip
   }
 
   MAPPING = {
@@ -152,13 +152,13 @@ class ImageMetadata
     raise(SaveError, "exiv2 is missing") unless File.executable?(Config[:exiv2])
 
     Tempfile.for iptc_commands(iptc_encoding) do |tempfile|
-      system "/usr/bin/exiv2", "-m", tempfile.path, @path
+      system Config[:exiv2], "-m", tempfile.path, @path
 
       return false unless $?.success?
     end
 
     Tempfile.for xmp_commands do |tempfile|
-      system "/usr/bin/exiv2", "-m", tempfile.path, @path
+      system Config[:exiv2], "-m", tempfile.path, @path
 
       return false unless $?.success?
     end
